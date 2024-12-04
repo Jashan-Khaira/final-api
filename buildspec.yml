@@ -20,8 +20,12 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '{"ImageURI":"%s"}' $REPOSITORY_URI:latest > imageDefinitions.json
-      - cat imageDefinitions.json
-      - aws ecs update-service --cluster jashan-cluster --service jashan-service --force-new-deployment --region us-east-1
+      - printf '[{"name":"jashan-app","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
+      - cat imagedefinitions.json
+
 artifacts:
-  files: imageDefinitions.json
+  files:
+    - imagedefinitions.json
+    - appspec.yaml
+    - taskdef.json
+  discard-paths: yes
