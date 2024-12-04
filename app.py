@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 import socket
 
 app = Flask(__name__)
@@ -7,8 +7,16 @@ ip_address = socket.gethostbyname(hostname)
 
 @app.route('/')
 def hello_cloud():
-    return 'Welcome to Jashanpreet Final Test API Server'
-  
+    try:
+        return jsonify({
+            'message': 'Welcome to Jashanpreet Final Test API Server',
+            'status': 'healthy'
+        }), 200
+    except Exception as e:
+        return jsonify({
+            'error': str(e)
+        }), 500
+
 @app.route('/host')
 def host_name():
     return hostname
